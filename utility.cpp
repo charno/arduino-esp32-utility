@@ -99,3 +99,19 @@ bool WiFiUtil::startWifi()
     
     return true;
 }
+
+bool TimeUtil::returnTrueEveryXSeconds(int32_t seconds)
+{
+    static unsigned long lastTime = 0;
+    unsigned long currentTime = millis();
+
+    if(lastTime + seconds*1000 > currentTime)
+    {
+        return false;
+    }
+    else
+    {
+        lastTime = currentTime;
+        return true;
+    }
+}

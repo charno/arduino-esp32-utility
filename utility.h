@@ -10,6 +10,8 @@ namespace charno
         {
             public:
                 static String getTimeString();
+
+                bool returnTrueEveryXSeconds(int32_t seconds);
         };
 
         class LogUtil
