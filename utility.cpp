@@ -25,10 +25,11 @@ LogUtil::LogLevel LogUtil::logLevel = LogUtil::LogLevel::DEBUG;
 String TimeUtil::getTimeString()
 {
     time_t tp = time(nullptr);
-    tm* timeinfo = localtime(&tp);
+    tm timeinfo;
+    localtime_r(&tp, &timeinfo);
 
     char tmbuf[64];
-    strftime(tmbuf, sizeof tmbuf, "%A, %B %d %Y %H:%M:%S", timeinfo);
+    strftime(tmbuf, sizeof tmbuf, "%A, %B %d %Y %H:%M:%S", &timeinfo);
     return String(tmbuf);
 }
 
