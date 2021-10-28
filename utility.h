@@ -9,6 +9,13 @@ namespace charno
         class TimeUtil
         {
             public:
+
+                /**
+                 * See https://github.com/nayarsystems/posix_tz_db/blob/master/zones.csv for timezones
+                 */
+                static String timezone;
+
+
                 static String getTimeString();
 
                 bool returnTrueEveryXSeconds(int32_t seconds);

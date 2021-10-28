@@ -22,6 +22,8 @@ const uint8_t WiFiUtil::empty_bssid[6] = {0,0,0,0,0,0};
 
 LogUtil::LogLevel LogUtil::logLevel = LogUtil::LogLevel::DEBUG;
 
+String TimeUtil::timezone = "UTC";
+
 String TimeUtil::getTimeString()
 {
     time_t tp = time(nullptr);
@@ -45,6 +47,11 @@ void WiFiUtil::getNtpTime()
 {
     LogUtil::info("Get time by NTP: ");
     configTime(0, 0, ntpserver.c_str());
+    if(TimeUtil::timezone != "")
+    {
+        setenv("TZ", TimeUtil::timezone.c_str(), 1);  
+        tzset();
+    }
     tm timeinfo;
     getLocalTime(&timeinfo);
     LogUtil::info("done: " + TimeUtil::getTimeString(), true);
