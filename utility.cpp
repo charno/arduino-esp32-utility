@@ -9,7 +9,7 @@ String WiFiUtil::ssid = "";
 String WiFiUtil::password = "";
 int32_t WiFiUtil::channel = 0;
 uint8_t WiFiUtil::bssid[6] = {0,0,0,0,0,0};
-uint32_t WiFiUtil::wifiTimeoutMillis = 10000;
+uint32_t WiFiUtil::wifiTimeoutMillis = 0;
 String WiFiUtil::hostname = "";
 bool WiFiUtil::staticIp = false;
 String WiFiUtil::ip = "";
@@ -84,7 +84,7 @@ bool WiFiUtil::startWifi()
 
     WiFi.begin(ssid.c_str(), password.c_str(), channel, memcmp(bssid, empty_bssid, 6) ? bssid : nullptr);
 
-    while(WiFi.status() != WL_CONNECTED && starttime + WiFiUtil::wifiTimeoutMillis > millis())
+    while(WiFi.status() != WL_CONNECTED && (starttime + wifiTimeoutMillis > millis() || wifiTimeoutMillis == 0))
     {
         delay(100);
         LogUtil::info(".", true);
@@ -96,6 +96,7 @@ bool WiFiUtil::startWifi()
         WiFi.disconnect();
         return false;
     }
+    WiFi.setAutoReconnect(true);
 
     LogUtil::info(" CONNECTED! IP: ", true);
     LogUtil::info(WiFi.localIP().toString(), true);
