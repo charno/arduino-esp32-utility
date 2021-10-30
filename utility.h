@@ -34,11 +34,12 @@ namespace charno
             public:
                 enum LogLevel
                 {
-                    DEBUG = 0,
-                    INFO = 1,
-                    WARN = 2,
-                    ERROR = 3,
-                    NONE = 4,
+                    TRACE = 0,
+                    DEBUG = 1,
+                    INFO = 2,
+                    WARN = 3,
+                    ERROR = 4,
+                    NONE = 5,
                 };
 
                 static LogLevel logLevel;
@@ -47,6 +48,11 @@ namespace charno
                 static void log(String message, String level, bool append);
 
             public:
+                static void trace(String message, bool append = false)
+                {
+                    if(logLevel <= LogLevel::TRACE) log(message, "TRACE", append);
+                }
+
                 static void debug(String message, bool append = false)
                 {
                     if(logLevel <= LogLevel::DEBUG) log(message, "DEBUG", append);
