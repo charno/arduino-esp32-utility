@@ -109,12 +109,14 @@ bool WiFiUtil::startWifi()
     return true;
 }
 
-bool TimeUtil::returnTrueEveryXSeconds(int32_t seconds)
+bool WiFiUtil::isConnected() {return WiFi.isConnected();}
+
+bool TimeUtil::TickGenerator::checkTick()
 {
     static unsigned long lastTime = 0;
     unsigned long currentTime = millis();
 
-    if(lastTime + seconds*1000 > currentTime)
+    if(lastTime + tickMillis > currentTime)
     {
         return false;
     }

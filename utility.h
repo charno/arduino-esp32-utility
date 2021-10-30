@@ -10,6 +10,15 @@ namespace charno
         {
             public:
 
+                class TickGenerator
+                {
+                        unsigned long lastTime = 0;
+                        unsigned long tickMillis;
+                    public:
+                        TickGenerator(unsigned long tickMillis) : tickMillis(tickMillis) {}
+                        bool checkTick();
+                };
+
                 /**
                  * See https://github.com/nayarsystems/posix_tz_db/blob/master/zones.csv for timezones
                  */
@@ -18,7 +27,6 @@ namespace charno
 
                 static String getTimeString();
 
-                bool returnTrueEveryXSeconds(int32_t seconds);
         };
 
         class LogUtil
@@ -102,6 +110,7 @@ namespace charno
 
                 static bool startWifi();
 
+                static bool isConnected();
         }; // class WiFiUtil
 
     } // namespace utility
