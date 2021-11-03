@@ -21,6 +21,8 @@ String WiFiUtil::ntpserver = "";
 const uint8_t WiFiUtil::empty_bssid[6] = {0,0,0,0,0,0};
 
 LogUtil::LogLevel LogUtil::logLevel = LogUtil::LogLevel::DEBUG;
+String LogUtil::udpHost = "";
+uint16_t LogUtil::udpPort = 0;
 
 String TimeUtil::timezone = "UTC";
 
@@ -37,10 +39,25 @@ String TimeUtil::getTimeString()
 
 void LogUtil::log(String message, String level, bool append){
     if(Serial)
-    if(!append) {
-        Serial.print("\n[" + TimeUtil::getTimeString() + "] " + level + ": ");
+    {
+        if(!append) {
+            Serial.print("\n[" + TimeUtil::getTimeString() + "] " + level + ": ");
+        }
+        Serial.print(message);
     }
-    Serial.print(message);
+
+    if(udpPort != 0 && udpHost != "" && WiFiUtil::isConnected())
+    {
+        WiFiUDP udp;
+        udp.beginPacket(udpHost.c_str(), udpPort);
+        if(!append) {
+            udp.print("\n" + WiFiUtil::hostname + " [" + TimeUtil::getTimeString() + "] " + level + ": ");
+        }
+        udp.print(message);
+        udp.endPacket();
+    }
+
+
 }
 
 void WiFiUtil::getNtpTime()

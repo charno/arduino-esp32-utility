@@ -43,6 +43,8 @@ namespace charno
                 };
 
                 static LogLevel logLevel;
+                static String udpHost;
+                static uint16_t udpPort;
 
             private:
                 static void log(String message, String level, bool append);
