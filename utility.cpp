@@ -37,6 +37,7 @@ String TimeUtil::getTimeString()
     return String(tmbuf);
 }
 
+
 void LogUtil::log(String message, String level, bool append){
     if(Serial)
     {
@@ -46,7 +47,7 @@ void LogUtil::log(String message, String level, bool append){
         Serial.print(message);
     }
 
-    if(udpPort != 0 && udpHost != "" && WiFiUtil::isConnected())
+    if(udpPort != 0 && udpHost != "" && WiFi.isConnected())
     {
         WiFiUDP udp;
         udp.beginPacket(udpHost.c_str(), udpPort);
@@ -56,8 +57,6 @@ void LogUtil::log(String message, String level, bool append){
         udp.print(message);
         udp.endPacket();
     }
-
-
 }
 
 void WiFiUtil::getNtpTime()
