@@ -6,6 +6,15 @@ namespace charno
     namespace utility 
     {
 
+        class ArduinoOTAUtil
+        {
+            public:
+                static void setupArduinoOTA();
+                static void otaLoopHandler();
+
+
+        };
+
         class TimeUtil
         {
             public:

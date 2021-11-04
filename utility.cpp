@@ -1,7 +1,7 @@
 #include "utility.h"
 #include <Preferences.h>
 #include <WiFi.h>
-
+#include <ArduinoOTA.h>
 
 using namespace charno::utility;
 
@@ -140,4 +140,47 @@ bool TimeUtil::TickGenerator::checkTick()
         lastTime = currentTime;
         return true;
     }
+}
+
+
+void ArduinoOTAUtil::setupArduinoOTA()
+{
+    ArduinoOTA
+        .onStart([]() {
+          String type;
+          if (ArduinoOTA.getCommand() == U_FLASH)
+            type = "sketch";
+          else // U_SPIFFS
+            type = "filesystem";
+
+          // NOTE: if updating SPIFFS this would be the place to unmount SPIFFS using SPIFFS.end()
+           LogUtil::info("Start OTA updating " + type);
+        })
+        .onEnd([]() {
+          LogUtil::info("OTA finished");
+        })
+        .onProgress([](unsigned int progress, unsigned int total) {
+          LogUtil::info("OTA Progress: " + String((progress / (total / 100))) + "%");
+        })
+        .onError([](ota_error_t error) {
+          LogUtil::error("OTA Error[" + String(error) + "]: ");
+          if (error == OTA_AUTH_ERROR)
+            LogUtil::error("Auth Failed", true);
+          else if (error == OTA_BEGIN_ERROR)
+            LogUtil::error("Begin Failed", true);
+          else if (error == OTA_CONNECT_ERROR)
+            LogUtil::error("Connect Failed", true);
+          else if (error == OTA_RECEIVE_ERROR)
+            LogUtil::error("Receive Failed", true);
+          else if (error == OTA_END_ERROR)
+            LogUtil::error("End Failed"), true;
+        });
+
+    ArduinoOTA.begin();
+
+}
+
+void ArduinoOTAUtil::otaLoopHandler()
+{
+    ArduinoOTA.handle();
 }
