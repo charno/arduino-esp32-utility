@@ -173,7 +173,7 @@ void ArduinoOTAUtil::setupArduinoOTA()
           else if (error == OTA_RECEIVE_ERROR)
             LogUtil::error("Receive Failed", true);
           else if (error == OTA_END_ERROR)
-            LogUtil::error("End Failed"), true;
+            LogUtil::error("End Failed", true);
         });
 
     ArduinoOTA.begin();
